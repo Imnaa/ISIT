@@ -48,7 +48,7 @@ namespace ISIT
                 }
                 
             }
-            // ?
+            // Перебор + оценка 
             foreach (var arr in AllPermutations(shedule))
             {
                 foreach (var i in arr)
