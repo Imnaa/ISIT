@@ -9,8 +9,9 @@ namespace ISIT
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
+            // Количество предметов
             int count = 22;
-            /*объявление всех предметов*/
+            /* Объявление всех предметов*/
             Discipline[] shedule = new Discipline[count];
             for (int i = 0; i < count; i++)
             {
@@ -18,7 +19,7 @@ namespace ISIT
                 shedule[i] = new Discipline(i+1);
                 /*заполняем влияние предмета на предметы*/
             }
-            
+            // ????
             foreach (var arr in AllPermutations(shedule))
             {
                 foreach (var i in arr)
