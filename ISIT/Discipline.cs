@@ -6,15 +6,16 @@ namespace ISIT
 {
     class Discipline
     {
-        public int number { get; set; } // номер дисциплины
-        private int credits { get; set; } // количество кредитов предмета
-        private int exams { get; set; } // Экзамен в конце
-        private int zachets { get; set; } // Зачет в конце
-        private int[] influence { get; set; } // Влияние?
-        private string name { get; set; } // Название предмета
-        public Discipline(int _number, int _exams, int _zachets, string _name)
+        public int id { get; set; } // номер дисциплины
+        public int credits { get; set; } // количество кредитов предмета
+        public int exams { get; set; } // Экзамен в конце
+        public int zachets { get; set; } // Зачет в конце
+        public float[] influence { get; set; } // Влияние?
+        public string name { get; set; } // Название предмета
+        public Discipline(int _id, int _credits, int _exams, int _zachets, string _name)
         {
-            number = _number;
+            id = _id;
+            credits = _credits;
             exams = _exams;
             zachets = _zachets;
             name = _name;
