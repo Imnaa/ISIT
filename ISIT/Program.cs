@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace ISIT
@@ -8,18 +9,52 @@ namespace ISIT
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-            // Количество предметов
-            int count = 22;
-            /* Объявление всех предметов*/
+            string name;
+            int credit, exams, zachets;
+            StreamReader sr = new StreamReader("../../../input.txt");
+            Console.Write("Количество предметов: ");
+            int count = int.Parse(Console.ReadLine());
+            // Создаем массив для всех важностей
+            float[,] massVajn = new float[count, count];
+            StreamReader srMassVajn = new StreamReader("../../../MassiveVajnostei.txt");
+            // Перебираем файл в важностями
+            for (int i = 0; i < count; ++i)
+            {
+                // запомнили строку
+                string s = srMassVajn.ReadLine();
+                // разделили строку на элементы
+                string[] t = s.Split('\t');
+                // по очереди присваиваем в наш массив
+                for (int j = 0; j < count; ++j)
+                {
+                    massVajn[i, j] = float.Parse(t[j]);
+                }
+            }
+            /*объявление всех предметов*/
+            sr.ReadLine(); // skip first line
             Discipline[] shedule = new Discipline[count];
             for (int i = 0; i < count; i++)
             {
+                // запомнили строку
+                string s = sr.ReadLine();
+                // разделили строку на элементы
+                string[] t = s.Split('\t');
+                // 
+                name = t[0];
+                credit = int.Parse(t[1]);
+                exams = int.Parse(t[2]);
+                zachets = int.Parse(t[3]);
                 /* считвыаем из файла и кидаем в ()*/
-                shedule[i] = new Discipline(i+1);
-                /*заполняем влияние предмета на предметы*/
+                shedule[i] = new Discipline(i + 1, credit, exams, zachets, name);
+                /* заполняем влияние предмета на предметы*/
+                shedule[i].influence = new float[count];
+                for (int j = 0; j < count; ++j)
+                {
+                    shedule[i].influence[j] = massVajn[i, j];
+                }
+
             }
-            // ????
+            // Перебор + оценка 
             foreach (var arr in AllPermutations(shedule))
             {
                 foreach (var i in arr)
@@ -34,8 +69,8 @@ namespace ISIT
              */
 
             /*перестановка всех предметов
-                проверка того, что предмет удволетворяет критериям
-                    если удволетворяет, то выводим в файл
+             *   проверка того, что предмет удволетворяет критериям
+             *      если удволетворяет, то выводим в файл
              */
 
             /*Критерии
@@ -50,13 +85,13 @@ namespace ISIT
         static bool Next(ref Discipline[] arr)
         {
             int k, j, l;
-            for (j = arr.Length - 2; (j >= 0) && (arr[j].number >= arr[j + 1].number); j--) { }
+            for (j = arr.Length - 2; (j >= 0) && (arr[j].id >= arr[j + 1].id); j--) { }
             if (j == -1)
             {
                 arr = arr.OrderBy(c => c).ToArray();
                 return false;
             }
-            for (l = arr.Length - 1; (arr[j].number >= arr[l].number) && (l >= 0); l--) { }
+            for (l = arr.Length - 1; (arr[j].id >= arr[l].id) && (l >= 0); l--) { }
             var tmp = arr[j];
             arr[j] = arr[l];
             arr[l] = tmp;
