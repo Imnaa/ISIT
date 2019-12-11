@@ -6,24 +6,24 @@ namespace ISIT
 {
     class Discipline
     {
-        public int number { get; set; }
-        private int credits { get; set; }
-        private int exams { get; set; }
-        private int zachets { get; set; }
-        private int[] influence { get; set; }
-        private string name { get; set; }
-
-        public Discipline(int _number)
+        public int number { get; set; } // номер дисциплины
+        private int credits { get; set; } // количество кредитов предмета
+        private int exams { get; set; } // Экзамен в конце
+        private int zachets { get; set; } // Зачет в конце
+        private int[] influence { get; set; } // Влияние?
+        private string name { get; set; } // Название предмета
+        public Discipline(int _number, int _exams, int _zachets, string _name)
         {
-            this.number = _number;
-
-            // здесь чтение из файла
+            number = _number;
+            exams = _exams;
+            zachets = _zachets;
+            name = _name;
         }
 
-        метод ВернутьЗнач(i, j)
-        {
-            return mas[i][j];
-        }
+        //метод ВернутьЗнач(i, j)
+        //{
+        //    return mas[i][j];
+        //}
             
 
 

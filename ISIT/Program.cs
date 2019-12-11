@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Sstem.IO;
 
 namespace ISIT
 {
@@ -8,14 +9,19 @@ namespace ISIT
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-            int count = 22;
+            StreamReader sr = new StreamReader("input.txt");         int count = 4;
+            string name;
+            int credit, exams, zachets;
             /*объявление всех предметов*/
             Discipline[] shedule = new Discipline[count];
             for (int i = 0; i < count; i++)
             {
+                name = sr.ReadLine();
+                credit = int.Parse(sr.ReadLine());
+                exams = int.Parse(sr.ReadLine());
+                zachets = int.Parse(sr.ReadLine());
                 /* считвыаем из файла и кидаем в ()*/
-                shedule[i] = new Discipline(i+1);
+                shedule[i] = new Discipline(i + 1);
                 /*заполняем влияние предмета на предметы*/
             }
             
@@ -33,8 +39,8 @@ namespace ISIT
              */
 
             /*перестановка всех предметов
-                проверка того, что предмет удволетворяет критериям
-                    если удволетворяет, то выводим в файл
+             *   проверка того, что предмет удволетворяет критериям
+             *      если удволетворяет, то выводим в файл
              */
 
             /*Критерии
