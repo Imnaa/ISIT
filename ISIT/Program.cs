@@ -108,13 +108,15 @@ namespace ISIT
                 for (int i = 0; i < count; ++i)
                 {
                     outString += arr[i].name + " ";
-                    if (i == semestrs[curSem++])
+                    if (i == semestrs[curSem])
                     {
                         outString += "| ";
+                        ++curSem;
                     }
                 }
-                sw.Write(outString);
+                sw.WriteLine(outString);
             }
+            sw.Close();
 
             /*создаем массив семестров, в каждом семестре - массив предметов
              * при каждом цикле смотрим, в каком семестре предмет - i
@@ -134,13 +136,13 @@ namespace ISIT
              */
 
 
-            Console.Read();
+            //Console.Read();
         }
         static float summMass(int end, int start, int id)
         {
             float boof = 0;
             for (int i = start; i < end; ++i)
-                boof += massVajn[i, id];
+                boof += massVajn[i, id-1];
             return boof;
         }
 
@@ -150,7 +152,7 @@ namespace ISIT
             for (j = arr.Length - 2; (j >= 0) && (arr[j].id >= arr[j + 1].id); j--) { }
             if (j == -1)
             {
-                arr = arr.OrderBy(c => c).ToArray();
+                arr = arr.OrderBy(c => c.id).ToArray();
                 return false;
             }
             for (l = arr.Length - 1; (arr[j].id >= arr[l].id) && (l >= 0); l--) { }
