@@ -7,15 +7,25 @@ namespace ISIT
 {
     class Program
     {
+        float[,] massVajn;
         static void Main(string[] args)
         {
-            string name;
+            string name, outString;
             int credit, exams, zachets;
+            int countSem, countCred;
             StreamReader sr = new StreamReader("../../../input.txt");
+            StreamWriter sw = new StreamWriter(File.OpenOrCreate("../../../output.txt"));
+
             Console.Write("Количество предметов: ");
             int count = int.Parse(Console.ReadLine());
+            Console.Write("Количество семестров: ");
+            int countSem = int.Parse(Console.ReadLine());
+            Console.Write("Максимальное количество кредитов: ");
+            int countCred = int.Parse(Console.ReadLine());
+            Console.Write("Введите коэффициент отсеивания: ");
+            float coef = int.Parse(Console.ReadLine());
             // Создаем массив для всех важностей
-            float[,] massVajn = new float[count, count];
+            massVajn = new float[count, count];
             StreamReader srMassVajn = new StreamReader("../../../MassiveVajnostei.txt");
             // Перебираем файл в важностями
             for (int i = 0; i < count; ++i)
@@ -49,11 +59,54 @@ namespace ISIT
                 
             }
             // ?
+            int[] semestrs = new int[countSem];
+            int cred;
+            int curSem;
+            float sum;
             foreach (var arr in AllPermutations(shedule))
             {
-                foreach (var i in arr)
-                    Console.Write(i + " ");
-                Console.WriteLine();
+                cred = 0;
+                curSem = 0;
+                sum = 0;
+                // получили один из возможных последовательностей предметов
+                for (int i = 0; i < count; ++i) // разбили на семестры
+                {
+                    cred += arr[i].credits;
+
+                    if (cred > countCred)
+                    {
+                        semestrs[curSem] = i - 1;
+                        cred = 0;
+                        curSem++;
+                        if (curSem == countSem && i < count - 1)
+                        {
+                            curSem = -1;
+                            break;
+                        }
+                    }
+
+                    if (curSem == 0)
+                    {
+                        sum += 0.5;
+                    }
+                    else
+                    {
+                        sum += 1 / (1 + exp(summMass(semesters[curSem], semesters[curSem - 1], arr[i].id)));
+                    }
+                }
+                if (curSem == -1) continue;
+                outString = "";
+                curSem = 0;
+
+                for (int i = 0; i < count; ++i)
+                {
+                    outString += arr[i].name + " ";
+                    if (i == semestrs[curSem++])
+                    {
+                        outString += "| ";
+                    }
+                }
+                sw.Write(outString);
             }
 
             /*создаем массив семестров, в каждом семестре - массив предметов
@@ -76,6 +129,14 @@ namespace ISIT
 
             Console.Read();
         }
+        static float summMass(int end, int start, int id)
+        {
+            float boof = 0.f;
+            for (int i = start; i < end; ++i)
+                boof += massVajn[i, id];
+            return boof;
+        }
+
         static bool Next(ref Discipline[] arr)
         {
             int k, j, l;
