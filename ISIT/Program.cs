@@ -7,23 +7,23 @@ namespace ISIT
 {
     class Program
     {
-        float[,] massVajn;
+        static float[,] massVajn;
         static void Main(string[] args)
         {
             string name, outString;
             int credit, exams, zachets;
             int countSem, countCred;
             StreamReader sr = new StreamReader("../../../input.txt");
-            StreamWriter sw = new StreamWriter(File.OpenOrCreate("../../../output.txt"));
+            StreamWriter sw = new StreamWriter("../../../output.txt");
 
             Console.Write("Количество предметов: ");
             int count = int.Parse(Console.ReadLine());
             Console.Write("Количество семестров: ");
-            int countSem = int.Parse(Console.ReadLine());
+            countSem = int.Parse(Console.ReadLine());
             Console.Write("Максимальное количество кредитов: ");
-            int countCred = int.Parse(Console.ReadLine());
+            countCred = int.Parse(Console.ReadLine());
             Console.Write("Введите коэффициент отсеивания: ");
-            float coef = int.Parse(Console.ReadLine());
+            double coef = Convert.ToDouble(Console.ReadLine());
             // Создаем массив для всех важностей
             massVajn = new float[count, count];
             StreamReader srMassVajn = new StreamReader("../../../MassiveVajnostei.txt");
@@ -62,13 +62,13 @@ namespace ISIT
                 {
                     shedule[i].influence[j] = massVajn[i, j];
                 }
-                
+
             }
             // ?
             int[] semestrs = new int[countSem];
             int cred;
             int curSem;
-            float sum;
+            double sum;
             // Перебор + оценка 
             foreach (var arr in AllPermutations(shedule))
             {
@@ -94,11 +94,11 @@ namespace ISIT
 
                     if (curSem == 0)
                     {
-                        sum += 0.5;
+                        sum += 0.5f;
                     }
                     else
                     {
-                        sum += 1 / (1 + exp(summMass(semesters[curSem], semesters[curSem - 1], arr[i].id)));
+                        sum += 1.0 / (1.0 + Math.Exp(summMass(semestrs[curSem], semestrs[curSem - 1], arr[i].id)));
                     }
                 }
                 if (curSem == -1 || sum < coef * count) continue;
@@ -138,7 +138,7 @@ namespace ISIT
         }
         static float summMass(int end, int start, int id)
         {
-            float boof = 0.f;
+            float boof = 0;
             for (int i = start; i < end; ++i)
                 boof += massVajn[i, id];
             return boof;
