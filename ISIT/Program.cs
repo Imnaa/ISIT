@@ -41,16 +41,22 @@ namespace ISIT
                 }
             }
             /*объявление всех предметов*/
+            sr.ReadLine(); // skip first line
             Discipline[] shedule = new Discipline[count];
             for (int i = 0; i < count; i++)
             {
-                name = sr.ReadLine();
-                credit = int.Parse(sr.ReadLine());
-                exams = int.Parse(sr.ReadLine());
-                zachets = int.Parse(sr.ReadLine());
+                // запомнили строку
+                string s = sr.ReadLine();
+                // разделили строку на элементы
+                string[] t = s.Split('\t');
+                // 
+                name = t[0];
+                credit = int.Parse(t[1]);
+                exams = int.Parse(t[2]);
+                zachets = int.Parse(t[3]);
                 /* считвыаем из файла и кидаем в ()*/
                 shedule[i] = new Discipline(i + 1, credit, exams, zachets, name);
-                /*заполняем влияние предмета на предметы*/
+                /* заполняем влияние предмета на предметы*/
                 shedule[i].influence = new float[count];
                 for (int j = 0; j < count; ++j)
                 {
@@ -63,6 +69,7 @@ namespace ISIT
             int cred;
             int curSem;
             float sum;
+            // Перебор + оценка 
             foreach (var arr in AllPermutations(shedule))
             {
                 cred = 0;
@@ -94,7 +101,7 @@ namespace ISIT
                         sum += 1 / (1 + exp(summMass(semesters[curSem], semesters[curSem - 1], arr[i].id)));
                     }
                 }
-                if (curSem == -1) continue;
+                if (curSem == -1 || sum < coef * count) continue;
                 outString = "";
                 curSem = 0;
 
